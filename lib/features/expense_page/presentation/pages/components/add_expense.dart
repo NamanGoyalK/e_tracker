@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'cubit/expense_cubit.dart';
+import '../../cubit/expense_cubit.dart';
 
 Future<void> displayTextInputDialog(BuildContext context) async {
   final TextEditingController textFieldController = TextEditingController();

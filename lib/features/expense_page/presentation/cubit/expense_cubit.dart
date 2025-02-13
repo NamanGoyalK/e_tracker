@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../models/expense_m.dart';
+import '../../domain/entities/expense_m.dart';
 
 class ExpenseCubit extends Cubit<List<Expense>> {
   ExpenseCubit() : super([]);
