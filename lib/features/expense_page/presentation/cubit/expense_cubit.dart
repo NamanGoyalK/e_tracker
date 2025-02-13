@@ -8,6 +8,8 @@ class ExpenseCubit extends Cubit<List<Expense>> {
     _loadExpenses();
   }
 
+  double monthlyBudget = 10000.0;
+
   void addExpense(Expense expense) {
     if (expense.name.isEmpty) {
       emitError('Task cannot be empty');
@@ -26,6 +28,7 @@ class ExpenseCubit extends Cubit<List<Expense>> {
 
     emit([...state, expense]);
     _saveExpenses();
+    _checkBudget();
   }
 
   void emitError(String message) {
@@ -58,6 +61,16 @@ class ExpenseCubit extends Cubit<List<Expense>> {
       final List<dynamic> expensesList = jsonDecode(expensesJson);
       final expenses = expensesList.map((e) => Expense.fromJson(e)).toList();
       emit(expenses);
+    }
+  }
+
+  void _checkBudget() {
+    final totalExpense = state.fold<double>(
+      0,
+      (sum, expense) => sum + double.parse(expense.price),
+    );
+    if (totalExpense > monthlyBudget) {
+      emitError('Monthly budget exceeded');
     }
   }
 

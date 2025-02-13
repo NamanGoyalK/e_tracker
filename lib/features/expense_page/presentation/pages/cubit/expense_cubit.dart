@@ -1,11 +1,16 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 import '../../../domain/entities/expense_m.dart';
 
 class ExpenseCubit extends Cubit<List<Expense>> {
-  ExpenseCubit() : super([]);
+  ExpenseCubit() : super([]) {
+    _loadExpenses();
+  }
 
-  void addTodo(String title, String money) {
+  double monthlyBudget = 10000.0;
+
+  void addExpense(String title, String money, String category) {
     if (title.isEmpty) {
       emitError('Task cannot be empty');
       return;
@@ -25,9 +30,12 @@ class ExpenseCubit extends Cubit<List<Expense>> {
       name: title,
       createdAt: DateTime.now(),
       price: money,
+      category: category,
     );
 
     emit([...state, expense]);
+    _saveExpenses();
+    _checkBudget();
   }
 
   void emitError(String message) {
@@ -42,8 +50,35 @@ class ExpenseCubit extends Cubit<List<Expense>> {
     super.onError(error, stackTrace);
   }
 
-  void removeTodo(Expense expense) {
+  void removeExpense(Expense expense) {
     emit(state.where((t) => t != expense).toList());
+    _saveExpenses();
+  }
+
+  Future<void> _saveExpenses() async {
+    final prefs = await SharedPreferences.getInstance();
+    final expensesJson = jsonEncode(state.map((e) => e.toJson()).toList());
+    await prefs.setString('expenses', expensesJson);
+  }
+
+  Future<void> _loadExpenses() async {
+    final prefs = await SharedPreferences.getInstance();
+    final expensesJson = prefs.getString('expenses');
+    if (expensesJson != null) {
+      final List<dynamic> expensesList = jsonDecode(expensesJson);
+      final expenses = expensesList.map((e) => Expense.fromJson(e)).toList();
+      emit(expenses);
+    }
+  }
+
+  void _checkBudget() {
+    final totalExpense = state.fold<double>(
+      0,
+      (sum, expense) => sum + double.parse(expense.price),
+    );
+    if (totalExpense > monthlyBudget) {
+      emitError('Monthly budget exceeded');
+    }
   }
 
   @override
