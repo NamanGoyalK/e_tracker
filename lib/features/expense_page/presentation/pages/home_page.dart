@@ -20,37 +20,67 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        title: Text(
+          widget.title,
+          style: TextStyle(
+            fontWeight: FontWeight.w500,
+            fontSize: 28,
+          ),
+        ),
       ),
-      body: BlocBuilder<ExpenseCubit, List<Expense>>(
-        builder: (context, expenses) {
-          return ListView.builder(
-            itemCount: expenses.length,
-            itemBuilder: (context, index) {
-              final expense = expenses[index];
-              return ListTile(
-                leading: Text('${index + 1}.'),
-                title: Text(
-                  expense.name.toUpperCase(),
+      body: Column(
+        children: [
+          BlocBuilder<ExpenseCubit, List<Expense>>(
+            builder: (context, expenses) {
+              final totalExpense = expenses.fold<double>(
+                0,
+                (sum, expense) => sum + double.parse(expense.price),
+              );
+              return Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  'Total Expense: ₹$totalExpense',
                   style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                subtitle: Text(
-                  expense.createdAt.toString().split('.')[0],
-                ),
-                trailing: Text(
-                  '₹${expense.price}',
-                  style: TextStyle(
+                    fontSize: 26,
                     fontWeight: FontWeight.w400,
-                    color: Theme.of(context).colorScheme.error,
-                    fontSize: 28,
                   ),
                 ),
               );
             },
-          );
-        },
+          ),
+          Expanded(
+            child: BlocBuilder<ExpenseCubit, List<Expense>>(
+              builder: (context, expenses) {
+                return ListView.builder(
+                  itemCount: expenses.length,
+                  itemBuilder: (context, index) {
+                    final expense = expenses[index];
+                    return ListTile(
+                      leading: Text('${index + 1}.'),
+                      title: Text(
+                        expense.name.toUpperCase(),
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      subtitle: Text(
+                        expense.createdAt.toString().split('.')[0],
+                      ),
+                      trailing: Text(
+                        '₹${expense.price}',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          color: Theme.of(context).colorScheme.error,
+                          fontSize: 28,
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
