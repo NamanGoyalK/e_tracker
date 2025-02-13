@@ -11,6 +11,7 @@ This Flutter app helps you easily track your expenses. Developed by me, Naman Go
 - **Local Storage:** Expenses are saved locally using shared preferences.
 - **Budget Tracking:** Set a monthly budget and get alerts if you exceed it.
 - **Clean UI:** Intuitive and user-friendly interface.
+- **Theme**: Both dark and light theme avialable.
 
 ## Tech Stack
 

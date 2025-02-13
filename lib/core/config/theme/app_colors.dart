@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 ThemeData appThemeDark() {
   return ThemeData(
-    colorScheme: const ColorScheme.dark(
-      primary: Colors.red, // Accent color for highlighting elements
+    colorScheme: ColorScheme.dark(
+      primary: Colors.amber[600]!, // Accent color for highlighting elements
     ),
     useMaterial3: true,
   );
