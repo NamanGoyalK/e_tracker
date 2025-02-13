@@ -10,7 +10,7 @@ android {
     compileSdk = 34
     
     defaultConfig {
-        applicationId = 'com.namangoyaldev.huddle'
+        applicationId = 'com.example.e_tracker'
         minSdk = 23
         targetSdk = 34
         versionCode = 11

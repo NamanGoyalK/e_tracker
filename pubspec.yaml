@@ -13,15 +13,6 @@ dependencies:
     sdk: flutter
   flutter_bloc: ^9.0.0
   shared_preferences: ^2.5.2
-  meta: ^1.15.0
-  firebase_core: ^3.8.0
-  firebase_auth: ^5.3.3
-  cloud_firestore: ^5.5.1
-  marquee: ^2.3.0
-  url_launcher: ^6.0.20
-  font_awesome_flutter: ^10.8.0
-  email_otp: ^3.0.2
-  email_otp_auth: ^1.1.0
 
 # flutter_icons:
 #   android: true
