@@ -1,3 +1,4 @@
+import 'package:e_tracker/common/widgets/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -12,32 +13,32 @@ Future<Expense?> displayTextInputDialog(BuildContext context) async {
     context: context,
     builder: (context) {
       return AlertDialog.adaptive(
-        title: const Text('Add Task:'),
-        content: Column(
-          children: [
-            TextField(
-              maxLines: null,
-              minLines: 1,
-              controller: textFieldController,
-              decoration: const InputDecoration(
-                hintText: "Purpose",
+        title: const Text('A D D  E X P E N S E:'),
+        content: SizedBox(
+          height: 120,
+          child: Column(
+            children: [
+              TextFromUser(
+                controller: textFieldController,
+                hintText: "Enter Purpose",
+                keyboardType: TextInputType.phone,
+                labelText: 'Purpose',
+                obscureText: false,
+                icon: Icons.abc,
               ),
-              autofocus: true,
-              textCapitalization: TextCapitalization.sentences,
-              textInputAction: TextInputAction.done,
-            ),
-            TextField(
-              maxLines: null,
-              minLines: 1,
-              controller: moneyFieldController,
-              decoration: const InputDecoration(
-                hintText: "Amount",
+              SizedBox(
+                height: 15,
               ),
-              autofocus: true,
-              textCapitalization: TextCapitalization.sentences,
-              textInputAction: TextInputAction.done,
-            ),
-          ],
+              TextFromUser(
+                controller: moneyFieldController,
+                hintText: "Enter Amount",
+                keyboardType: TextInputType.text,
+                labelText: 'Amount',
+                obscureText: false,
+                icon: Icons.abc,
+              ),
+            ],
+          ),
         ),
         actions: <Widget>[
           TextButton(
