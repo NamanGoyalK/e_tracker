@@ -28,7 +28,7 @@ lib/
 │   └── config/
 │   └── widgets/
 │       ├── index.dart
-|        └── text_fields.dart
+|       └── text_fields.dart
 ├── core/
 │   └── config/
 │       └── theme/
