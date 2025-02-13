@@ -5,10 +5,10 @@ import '../../../domain/entities/expense_m.dart';
 
 class ExpenseCubit extends Cubit<List<Expense>> {
   ExpenseCubit() : super([]) {
-    _loadExpenses();
+    _loadExpenses(); // Load expenses from shared preferences
   }
 
-  double monthlyBudget = 10000.0;
+  double monthlyBudget = 10000.0; // Set a default monthly budget
 
   void addExpense(String title, String money, String category) {
     if (title.isEmpty) {
@@ -33,9 +33,9 @@ class ExpenseCubit extends Cubit<List<Expense>> {
       category: category,
     );
 
-    emit([...state, expense]);
-    _saveExpenses();
-    _checkBudget();
+    emit([...state, expense]); // Add new expense to the state
+    _saveExpenses(); // Save expenses to shared preferences
+    _checkBudget(); // Check if the budget is exceeded
   }
 
   void emitError(String message) {
@@ -51,14 +51,15 @@ class ExpenseCubit extends Cubit<List<Expense>> {
   }
 
   void removeExpense(Expense expense) {
-    emit(state.where((t) => t != expense).toList());
-    _saveExpenses();
+    emit(
+        state.where((t) => t != expense).toList()); // Remove expense from state
+    _saveExpenses(); // Save updated expenses to shared preferences
   }
 
   Future<void> _saveExpenses() async {
     final prefs = await SharedPreferences.getInstance();
     final expensesJson = jsonEncode(state.map((e) => e.toJson()).toList());
-    await prefs.setString('expenses', expensesJson);
+    await prefs.setString('expenses', expensesJson); // Save expenses as JSON
   }
 
   Future<void> _loadExpenses() async {
@@ -67,7 +68,7 @@ class ExpenseCubit extends Cubit<List<Expense>> {
     if (expensesJson != null) {
       final List<dynamic> expensesList = jsonDecode(expensesJson);
       final expenses = expensesList.map((e) => Expense.fromJson(e)).toList();
-      emit(expenses);
+      emit(expenses); // Load expenses from JSON
     }
   }
 
@@ -77,7 +78,7 @@ class ExpenseCubit extends Cubit<List<Expense>> {
       (sum, expense) => sum + double.parse(expense.price),
     );
     if (totalExpense > monthlyBudget) {
-      emitError('Monthly budget exceeded');
+      emitError('Monthly budget exceeded'); // Emit error if budget is exceeded
     }
   }
 

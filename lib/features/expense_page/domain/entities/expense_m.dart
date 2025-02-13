@@ -11,6 +11,7 @@ class Expense {
     required this.category,
   });
 
+  // Convert Expense object to JSON
   Map<String, dynamic> toJson() {
     return {
       'name': name,
@@ -20,6 +21,7 @@ class Expense {
     };
   }
 
+  // Create Expense object from JSON
   factory Expense.fromJson(Map<String, dynamic> json) {
     return Expense(
       name: json['name'],

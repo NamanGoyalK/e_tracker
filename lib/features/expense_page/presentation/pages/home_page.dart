@@ -1,8 +1,6 @@
-import 'package:e_tracker/common/widgets/index.dart';
 import 'package:e_tracker/features/expense_page/domain/entities/expense_m.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import 'components/add_expense.dart';
 import '../cubit/expense_cubit.dart';
@@ -17,19 +15,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String selectedCategory = 'All';
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      showSnackBar(
-        context,
-        'Tap add to add expense & swipe left to delete.',
-        Colors.cyan,
-      );
-    });
-  }
+  String selectedCategory = 'All'; // Default category
 
   @override
   Widget build(BuildContext context) {
@@ -38,16 +24,15 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(
           widget.title,
-          textAlign: TextAlign.center,
           style: TextStyle(
             fontWeight: FontWeight.w500,
             fontSize: 28,
           ),
         ),
-        centerTitle: true,
       ),
       body: Column(
         children: [
+          // Display total expense
           BlocBuilder<ExpenseCubit, List<Expense>>(
             builder: (context, expenses) {
               final totalExpense = expenses.fold<double>(
@@ -85,34 +70,23 @@ class _MyHomePageState extends State<MyHomePage> {
               );
             },
           ),
-          Padding(
-            padding:
-                const EdgeInsets.only(left: 14.0, right: 14.0, bottom: 12.0),
-            child: DropdownButtonFormField<String>(
-              decoration: InputDecoration(
-                prefixIcon: Icon(Icons.account_balance_wallet_outlined),
-                labelText: 'Category',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                fillColor: Theme.of(context).colorScheme.surface,
-                filled: true,
-              ),
-              value: selectedCategory,
-              items: <String>['All', 'Food', 'Transport', 'Bills']
-                  .map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-              onChanged: (String? newValue) {
-                setState(() {
-                  selectedCategory = newValue!;
-                });
-              },
-            ),
+          // Dropdown for category selection
+          DropdownButton<String>(
+            value: selectedCategory,
+            items: <String>['All', 'Food', 'Transport', 'Bills']
+                .map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            }).toList(),
+            onChanged: (String? newValue) {
+              setState(() {
+                selectedCategory = newValue!;
+              });
+            },
           ),
+          // Display list of expenses
           Expanded(
             child: BlocBuilder<ExpenseCubit, List<Expense>>(
               builder: (context, expenses) {
@@ -174,31 +148,6 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text('© Developed by ',
-                    style: TextStyle(
-                      color: Colors.grey,
-                    )),
-                GestureDetector(
-                  onTap: () async {
-                    const url = 'https://www.linkedin.com/in/naman-goyal-dev';
-                    final uri = Uri.parse(url);
-                    if (await canLaunchUrl(uri)) {
-                      await launchUrl(uri);
-                    } else {
-                      throw 'Could not launch $url';
-                    }
-                  },
-                  child: Text('Naman Goyal'),
-                ),
-              ],
-            ),
-          )
         ],
       ),
       floatingActionButton: FloatingActionButton(

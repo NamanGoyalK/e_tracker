@@ -8,7 +8,7 @@ import '../../cubit/expense_cubit.dart';
 Future<Expense?> displayTextInputDialog(BuildContext context) async {
   final TextEditingController textFieldController = TextEditingController();
   final TextEditingController moneyFieldController = TextEditingController();
-  String selectedCategory = 'Food';
+  String selectedCategory = 'Food'; // Default category
 
   return showDialog<Expense>(
     context: context,
@@ -19,6 +19,7 @@ Future<Expense?> displayTextInputDialog(BuildContext context) async {
           height: 200,
           child: Column(
             children: [
+              // Input field for expense purpose
               TextFromUser(
                 controller: textFieldController,
                 hintText: "Enter Purpose",
@@ -30,6 +31,7 @@ Future<Expense?> displayTextInputDialog(BuildContext context) async {
               SizedBox(
                 height: 15,
               ),
+              // Input field for expense amount
               TextFromUser(
                 controller: moneyFieldController,
                 hintText: "Enter Amount",
@@ -41,6 +43,7 @@ Future<Expense?> displayTextInputDialog(BuildContext context) async {
               SizedBox(
                 height: 15,
               ),
+              // Dropdown for selecting category
               DropdownButtonFormField<String>(
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.account_balance_wallet_outlined),

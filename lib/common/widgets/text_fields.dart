@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// Custom text field widget
 class TextFromUser extends StatelessWidget {
   final TextEditingController controller;
   final TextInputType keyboardType;
@@ -61,6 +62,7 @@ class TextFromUser extends StatelessWidget {
   }
 }
 
+// Function to show a snackbar with a message
 void showSnackBar(BuildContext context, String message, Color color) {
   ScaffoldMessenger.of(context).hideCurrentSnackBar();
   ScaffoldMessenger.of(context).showSnackBar(

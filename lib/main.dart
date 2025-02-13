@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await SharedPreferences.getInstance();
-  runApp(MyApp());
+  WidgetsFlutterBinding.ensureInitialized(); // Ensure Flutter is initialized
+  await SharedPreferences.getInstance(); // Initialize shared preferences
+  runApp(MyApp()); // Run the main application
 }
