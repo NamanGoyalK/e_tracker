@@ -38,11 +38,30 @@ class _MyHomePageState extends State<MyHomePage> {
               );
               return Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Text(
-                  'Total Expense: ₹$totalExpense',
-                  style: TextStyle(
-                    fontSize: 26,
-                    fontWeight: FontWeight.w400,
+                child: Container(
+                  width: double.infinity,
+                  height: 50,
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.inversePrimary,
+                      border: Border.all(
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.grey,
+                          blurRadius: 1,
+                          offset: Offset(1, 1),
+                        )
+                      ]),
+                  child: Center(
+                    child: Text(
+                      'Total Expense: ₹$totalExpense',
+                      style: TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
                   ),
                 ),
               );
@@ -85,8 +104,9 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         foregroundColor: Theme.of(context).colorScheme.onSurface,
+        elevation: 4,
         onPressed: () => displayTextInputDialog(context),
-        tooltip: 'Add Task',
+        tooltip: 'A D D  E X P E N S E',
         child: const Icon(Icons.add),
       ),
     );

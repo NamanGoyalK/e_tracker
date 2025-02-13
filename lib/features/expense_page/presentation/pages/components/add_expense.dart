@@ -1,14 +1,14 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../domain/entities/expense_m.dart';
 import '../../cubit/expense_cubit.dart';
 
-Future<void> displayTextInputDialog(BuildContext context) async {
+Future<Expense?> displayTextInputDialog(BuildContext context) async {
   final TextEditingController textFieldController = TextEditingController();
   final TextEditingController moneyFieldController = TextEditingController();
 
-  return showDialog(
+  return showDialog<Expense>(
     context: context,
     builder: (context) {
       return AlertDialog.adaptive(
@@ -49,15 +49,13 @@ Future<void> displayTextInputDialog(BuildContext context) async {
           TextButton(
             child: const Text('OK'),
             onPressed: () {
-              // Add task and trim whitespace
-              BlocProvider.of<ExpenseCubit>(context).addTodo(
-                  textFieldController.text.trim(),
-                  moneyFieldController.text.trim());
-
-              if (kDebugMode) {
-                print(textFieldController.text.trim());
-              }
-              Navigator.pop(context);
+              final expense = Expense(
+                name: textFieldController.text.trim(),
+                createdAt: DateTime.now(),
+                price: moneyFieldController.text.trim(),
+              );
+              BlocProvider.of<ExpenseCubit>(context).addExpense(expense);
+              Navigator.pop(context, expense);
             },
           ),
         ],

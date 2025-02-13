@@ -5,27 +5,21 @@ import '../../domain/entities/expense_m.dart';
 class ExpenseCubit extends Cubit<List<Expense>> {
   ExpenseCubit() : super([]);
 
-  void addTodo(String title, String money) {
-    if (title.isEmpty) {
+  void addExpense(Expense expense) {
+    if (expense.name.isEmpty) {
       emitError('Task cannot be empty');
       return;
     }
 
-    if (state.any((expense) => expense.name == title)) {
+    if (state.any((e) => e.name == expense.name)) {
       emitError('Task already exists');
       return;
     }
 
-    if (money.isEmpty) {
+    if (expense.price.isEmpty) {
       emitError('Enter a valid price');
       return;
     }
-
-    final expense = Expense(
-      name: title,
-      createdAt: DateTime.now(),
-      price: money,
-    );
 
     emit([...state, expense]);
   }
@@ -42,8 +36,8 @@ class ExpenseCubit extends Cubit<List<Expense>> {
     super.onError(error, stackTrace);
   }
 
-  void removeTodo(Expense expense) {
-    emit(state.where((t) => t != expense).toList());
+  void removeExpense(Expense expense) {
+    emit(state.where((e) => e != expense).toList());
   }
 
   @override
