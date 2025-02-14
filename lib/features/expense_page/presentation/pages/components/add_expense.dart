@@ -38,7 +38,7 @@ Future<Expense?> displayTextInputDialog(BuildContext context) async {
                 keyboardType: TextInputType.number,
                 labelText: 'Amount',
                 obscureText: false,
-                icon: Icons.abc,
+                icon: Icons.currency_rupee_sharp,
               ),
               SizedBox(
                 height: 15,
