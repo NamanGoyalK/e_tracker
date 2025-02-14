@@ -1,17 +1,25 @@
-import 'package:e_tracker/common/widgets/index.dart';
-import 'package:e_tracker/features/expense_page/domain/entities/expense_m.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'components/add_expense.dart';
-import '../cubit/expense_cubit.dart';
-import 'components/animated_background.dart';
+import 'package:e_tracker/common/widgets/index.dart';
+import 'package:e_tracker/features/expense_page/domain/entities/expense_m.dart';
 
+import '../cubit/expense_cubit.dart';
+import 'components/add_expense.dart';
+import 'components/animated_background.dart';
+import 'components/add_limit.dart';
+
+// ignore: must_be_immutable
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  MyHomePage({
+    super.key,
+    required this.title,
+    required this.monthlyBudget,
+  });
 
   final String title;
+  double monthlyBudget;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -19,6 +27,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   String selectedCategory = 'All';
+  bool isBudgetExceeded = false;
 
   @override
   void initState() {
@@ -30,6 +39,26 @@ class _MyHomePageState extends State<MyHomePage> {
         Colors.cyan,
       );
     });
+  }
+
+  void _checkBudget(double totalExpense) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        isBudgetExceeded = totalExpense > widget.monthlyBudget;
+      });
+    });
+  }
+
+  Future<void> _editMonthlyLimit() async {
+    final newLimit = await showEditLimitDialog(context, widget.monthlyBudget);
+
+    if (newLimit != null) {
+      // ignore: use_build_context_synchronously
+      BlocProvider.of<ExpenseCubit>(context).setMonthlyBudget(newLimit);
+      setState(() {
+        widget.monthlyBudget = newLimit;
+      });
+    }
   }
 
   @override
@@ -45,7 +74,14 @@ class _MyHomePageState extends State<MyHomePage> {
             fontSize: 28,
           ),
         ),
-        centerTitle: true,
+        // centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.money),
+            onPressed: _editMonthlyLimit,
+            tooltip: 'Edit Monthly Limit',
+          ),
+        ],
       ),
       body: Stack(
         children: [
@@ -61,6 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     0,
                     (sum, expense) => sum + double.parse(expense.price),
                   );
+                  _checkBudget(totalExpense);
                   return Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Container(
@@ -181,6 +218,17 @@ class _MyHomePageState extends State<MyHomePage> {
                   },
                 ),
               ),
+              if (isBudgetExceeded)
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Warning: Monthly budget exceeded!',
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
               Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: Row(

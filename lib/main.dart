@@ -4,6 +4,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Ensure Flutter is initialized
-  await SharedPreferences.getInstance(); // Initialize shared preferences
-  runApp(MyApp()); // Run the main application
+  final prefs =
+      await SharedPreferences.getInstance(); // Initialize shared preferences
+  final monthlyBudget =
+      prefs.getDouble('monthlyBudget') ?? 10000.0; // Load monthly budget
+  runApp(MyApp(monthlyBudget: monthlyBudget)); // Pass the budget to the app
 }

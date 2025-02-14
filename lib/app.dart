@@ -6,7 +6,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MyApp extends StatelessWidget {
   // This widget is the root of the application.
-  const MyApp({super.key});
+  const MyApp({super.key, required this.monthlyBudget});
+
+  final double monthlyBudget;
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +35,7 @@ class MyApp extends StatelessWidget {
         darkTheme: appThemeDark(),
         home: MyHomePage(
           title: 'E X P E N S E  T R A C K E R',
+          monthlyBudget: monthlyBudget,
         ),
       ),
     );

@@ -6,6 +6,7 @@ import '../../domain/entities/expense_m.dart';
 class ExpenseCubit extends Cubit<List<Expense>> {
   ExpenseCubit() : super([]) {
     _loadExpenses(); // Load expenses from shared preferences
+    _loadMonthlyBudget(); // Load monthly budget from shared preferences
   }
 
   double monthlyBudget = 10000.0; // Set a default monthly budget
@@ -63,6 +64,24 @@ class ExpenseCubit extends Cubit<List<Expense>> {
       final expenses = expensesList.map((e) => Expense.fromJson(e)).toList();
       emit(expenses); // Load expenses from JSON
     }
+  }
+
+  Future<void> _saveMonthlyBudget() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setDouble(
+        'monthlyBudget', monthlyBudget); // Save monthly budget
+  }
+
+  Future<void> _loadMonthlyBudget() async {
+    final prefs = await SharedPreferences.getInstance();
+    monthlyBudget =
+        prefs.getDouble('monthlyBudget') ?? 10000.0; // Load monthly budget
+  }
+
+  void setMonthlyBudget(double budget) {
+    monthlyBudget = budget;
+    _saveMonthlyBudget(); // Save the new budget
+    _checkBudget(); // Check if the new budget is exceeded
   }
 
   void _checkBudget() {
