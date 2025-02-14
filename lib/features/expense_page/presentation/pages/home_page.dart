@@ -10,16 +10,15 @@ import 'components/add_expense.dart';
 import 'components/animated_background.dart';
 import 'components/add_limit.dart';
 
-// ignore: must_be_immutable
 class MyHomePage extends StatefulWidget {
-  MyHomePage({
+  const MyHomePage({
     super.key,
     required this.title,
     required this.monthlyBudget,
   });
 
   final String title;
-  double monthlyBudget;
+  final double monthlyBudget;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -28,10 +27,12 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   String selectedCategory = 'All';
   bool isBudgetExceeded = false;
+  late double currentMonthlyBudget;
 
   @override
   void initState() {
     super.initState();
+    currentMonthlyBudget = widget.monthlyBudget;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       showSnackBar(
         context,
@@ -44,19 +45,18 @@ class _MyHomePageState extends State<MyHomePage> {
   void _checkBudget(double totalExpense) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
-        isBudgetExceeded = totalExpense > widget.monthlyBudget;
+        isBudgetExceeded = totalExpense > currentMonthlyBudget;
       });
     });
   }
 
   Future<void> _editMonthlyLimit() async {
-    final newLimit = await showEditLimitDialog(context, widget.monthlyBudget);
+    final newLimit = await showEditLimitDialog(context, currentMonthlyBudget);
 
-    if (newLimit != null) {
-      // ignore: use_build_context_synchronously
+    if (newLimit != null && mounted) {
       BlocProvider.of<ExpenseCubit>(context).setMonthlyBudget(newLimit);
       setState(() {
-        widget.monthlyBudget = newLimit;
+        currentMonthlyBudget = newLimit;
       });
     }
   }
@@ -74,7 +74,6 @@ class _MyHomePageState extends State<MyHomePage> {
             fontSize: 28,
           ),
         ),
-        // centerTitle: true,
         actions: [
           IconButton(
             icon: Icon(Icons.money),
