@@ -70,8 +70,7 @@ lib/
 - **Error Handling:** Implemented basic error handling in the `ExpenseCubit` using the `onError` method. This allows the app to gracefully handle issues like invalid input.
 - **UI/UX:** Focused on a clean and intuitive user interface to make the app easy to use.
 
-<img src="image/README/1739514716658.png" alt="Dark Theme" width="300"/>
-<img src="image/README/1739514698004.png" alt="Light Theme" width="300"/>
+<img src="image/README/1739514716658.png" alt="Dark Theme" width="200"/><img src="image/README/1739514698004.png" alt="Light Theme" width="200"/>
 
 This project demonstrates my understanding of Flutter, state management, and data persistence. I'm eager to discuss it further during the CodeChef interview.
 
