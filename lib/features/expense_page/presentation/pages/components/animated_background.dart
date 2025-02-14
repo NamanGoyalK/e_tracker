@@ -111,8 +111,9 @@ class _AnimatedBackgroundState extends State<AnimatedBackground>
   }
 
   void _tick(Duration elapsed) {
-    if (elapsed - _lastElapsed < Duration(milliseconds: 1000 ~/ _frameRate))
+    if (elapsed - _lastElapsed < Duration(milliseconds: 1000 ~/ _frameRate)) {
       return; // Limit updates to target frame rate
+    }
     _lastElapsed = elapsed;
 
     setState(() {
